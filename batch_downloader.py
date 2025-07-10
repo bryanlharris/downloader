@@ -72,7 +72,7 @@ def download_task(task: dict, *, dry_run: bool = False) -> None:
             ]
 
             with ndjson_tmp.open('w', encoding='utf-8') as out:
-                subprocess.run(cmd, stdout=out, check=True)
+                subprocess.run(cmd, stdout=out, stderr=sys.stderr, check=True)
 
             shutil.copy2(ndjson_tmp, dest_file)
             ndjson_tmp.unlink()
