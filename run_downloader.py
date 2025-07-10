@@ -16,8 +16,13 @@ def main() -> None:
     args = parser.parse_args()
     folder_name = args.input
 
-    script_path = os.path.join(os.path.dirname(__file__), folder_name,
-                               "utilities", "downloader.sh")
+    # look for downloader.sh directly under the folder first
+    base_dir = os.path.dirname(__file__)
+    script_path = os.path.join(base_dir, folder_name, "downloader.sh")
+    if not os.path.isfile(script_path):
+        # fall back to legacy location inside a utilities subfolder
+        script_path = os.path.join(base_dir, folder_name, "utilities",
+                                   "downloader.sh")
 
     if not os.path.isfile(script_path):
         raise FileNotFoundError(
