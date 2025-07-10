@@ -16,27 +16,6 @@ from typing import Iterable
 import json
 
 
-def stream_gz_to_ndjson(gz_path: Path, ndjson_path: Path) -> None:
-    """Convert a gzipped JSON array to NDJSON format."""
-    with gzip.open(gz_path, "rt", encoding="utf-8") as src, ndjson_path.open(
-        "w", encoding="utf-8"
-    ) as dst:
-        first = True
-        for line in src:
-            line = line.strip()
-            if first:
-                if line.startswith("["):
-                    line = line[1:]
-                first = False
-            if line.endswith("]"):
-                line = line[:-1]
-            if line.endswith(","):
-                line = line[:-1]
-            line = line.strip()
-            if line:
-                dst.write(line + "\n")
-
-
 def download_task(task: dict, *, dry_run: bool = False) -> None:
     """Download the URLs for a single task if not already done.
 
@@ -85,7 +64,7 @@ def download_task(task: dict, *, dry_run: bool = False) -> None:
                     "wget -nv -O - "
                     + shlex.quote(url)
                     + " | gunzip -c | sed "
-                    "-e '1s/^\\[' "
+                    "-e '1s/^[[]' "
                     "-e '$s/]$//' "
                     "-e 's/^[[:space:]]*//' "
                     "-e 's/},$//'"
