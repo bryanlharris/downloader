@@ -1,6 +1,7 @@
 import argparse
-import os
+import glob
 import subprocess
+from pathlib import Path
 
 
 def main() -> None:
@@ -16,13 +17,16 @@ def main() -> None:
     args = parser.parse_args()
     folder_name = args.input
 
-    base_dir = os.path.dirname(__file__)
-    script_path = os.path.join(base_dir, folder_name, "downloader.sh")
+    pattern = str(Path.cwd() / "**" / "downloader.sh")
+    candidates = [Path(p) for p in glob.glob(pattern, recursive=True)]
+    matches = [p for p in candidates if p.parent.name == folder_name]
 
-    if not os.path.isfile(script_path):
+    if not matches:
         raise FileNotFoundError(
             f"No downloader.sh found for folder {folder_name}",
         )
+
+    script_path = str(matches[0])
 
     print(f"Executing {script_path}")
 
