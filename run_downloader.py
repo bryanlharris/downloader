@@ -1,5 +1,5 @@
 import argparse
-import glob
+import os
 import subprocess
 
 
@@ -16,16 +16,13 @@ def main() -> None:
     args = parser.parse_args()
     folder_name = args.input
 
-    pattern = f"/Workspace/Users/*/{folder_name}/utilities/downloader.sh"
-    paths = glob.glob(pattern)
+    script_path = os.path.join(os.path.dirname(__file__), folder_name,
+                               "utilities", "downloader.sh")
 
-    if not paths:
+    if not os.path.isfile(script_path):
         raise FileNotFoundError(
             f"No downloader.sh found for folder {folder_name}",
         )
-
-    # If multiple paths match, pick the first one deterministically
-    script_path = sorted(paths)[0]
 
     print(f"Executing {script_path}")
 

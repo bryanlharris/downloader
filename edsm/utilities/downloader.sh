@@ -1,16 +1,20 @@
 #!/usr/bin/bash
 
-tmp="/tmp/data"
+# Create a temporary directory
+tmp_dir=$(mktemp -d)
+trap 'rm -rf "$tmp_dir"' EXIT
+
 root="/Volumes/edsm/bronze/landing/data"
 marker_root="/Volumes/edsm/bronze/landing/markers"
 
-install -dv "$tmp" "$root" "$marker_root"
+install -dv "$root" "$marker_root"
 touch "$marker_root/marker"
 
+# Download function
 download(){
     ts_check="$1"
     shift
-    tmp_save_dir="$tmp/$(date +%Y%m%d)"
+    tmp_save_dir="$tmp_dir/$(date +%Y%m%d)"
     root_save_dir="$root/$(date +%Y%m%d)"
     check_dir="$marker_root/$ts_check"
     if [[ ! -d "$check_dir" ]]; then
@@ -23,11 +27,12 @@ download(){
                 wget -nv -O - "$url" \
                     | gunzip -c \
                     | sed \
-                        -e '1s/^\[//' \
+                        -e '1s/^\\[//' \
                         -e '$s/]$//' \
                         -e 's/^[[:space:]]*//' \
                         -e 's/},$/}/' > "$filename"
                 cat "$tmp_save_dir/$filename" > "$root_save_dir/$filename"
+                rm "$tmp_save_dir/$filename"
             done
         )
     fi
@@ -35,9 +40,6 @@ download(){
 
 # yearly example
 download "$(date +%Y)" https://www.edsm.net/dump/systemsWithCoordinates.json.gz
-
-# monthly example
-# download "$(date +%Y%m)" https://www.edsm.net/dump/systemsWithCoordinates.json.gz
 
 # Weekly example
 download "$(date +%Y)_week$(date +%U)" https://www.edsm.net/dump/stations.json.gz \
@@ -49,16 +51,4 @@ download "$(date +%Y%m%d)" https://www.edsm.net/dump/powerPlay.json.gz \
     https://www.edsm.net/dump/bodies7days.json.gz \
     https://www.edsm.net/dump/systemsWithCoordinates7days.json.gz \
     https://www.edsm.net/dump/systemsWithoutCoordinates.json.gz
-
-
-
-
-
-
-
-
-
-
-
-
 
