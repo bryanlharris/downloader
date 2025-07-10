@@ -27,7 +27,7 @@ download(){
                 wget -nv -O - "$url" \
                     | gunzip -c \
                     | sed \
-                        -e '1s/^\\[//' \
+                        -e '1s/^\[//' \
                         -e '$s/]$//' \
                         -e 's/^[[:space:]]*//' \
                         -e 's/},$/}/' > "$filename"
