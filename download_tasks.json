@@ -1,0 +1,68 @@
+{
+  "tasks": [
+    {
+      "name": "edsm_yearly",
+      "root": "/Volumes/edsm/bronze/landing/data",
+      "marker_root": "/Volumes/edsm/bronze/landing/markers",
+      "timestamp": "%Y",
+      "urls": [
+        "https://www.edsm.net/dump/systemsWithCoordinates.json.gz"
+      ]
+    },
+    {
+      "name": "edsm_weekly",
+      "root": "/Volumes/edsm/bronze/landing/data",
+      "marker_root": "/Volumes/edsm/bronze/landing/markers",
+      "timestamp": "%Y_week%U",
+      "urls": [
+        "https://www.edsm.net/dump/stations.json.gz",
+        "https://www.edsm.net/dump/codex.json.gz"
+      ]
+    },
+    {
+      "name": "edsm_daily",
+      "root": "/Volumes/edsm/bronze/landing/data",
+      "marker_root": "/Volumes/edsm/bronze/landing/markers",
+      "timestamp": "%Y%m%d",
+      "urls": [
+        "https://www.edsm.net/dump/powerPlay.json.gz",
+        "https://www.edsm.net/dump/systemsPopulated.json.gz",
+        "https://www.edsm.net/dump/bodies7days.json.gz",
+        "https://www.edsm.net/dump/systemsWithCoordinates7days.json.gz",
+        "https://www.edsm.net/dump/systemsWithoutCoordinates.json.gz"
+      ]
+    },
+    {
+      "name": "edsm_lc_yearly",
+      "root": "/Volumes/dev_lc/edsm_bronze/landing/data",
+      "marker_root": "/Volumes/dev_lc/edsm_bronze/landing/markers",
+      "timestamp": "%Y",
+      "urls": [
+        "https://www.edsm.net/dump/systemsWithCoordinates.json.gz"
+      ]
+    },
+    {
+      "name": "edsm_lc_weekly",
+      "root": "/Volumes/dev_lc/edsm_bronze/landing/data",
+      "marker_root": "/Volumes/dev_lc/edsm_bronze/landing/markers",
+      "timestamp": "%Y_week%U",
+      "urls": [
+        "https://www.edsm.net/dump/stations.json.gz",
+        "https://www.edsm.net/dump/codex.json.gz"
+      ]
+    },
+    {
+      "name": "edsm_lc_daily",
+      "root": "/Volumes/dev_lc/edsm_bronze/landing/data",
+      "marker_root": "/Volumes/dev_lc/edsm_bronze/landing/markers",
+      "timestamp": "%Y%m%d",
+      "urls": [
+        "https://www.edsm.net/dump/powerPlay.json.gz",
+        "https://www.edsm.net/dump/systemsPopulated.json.gz",
+        "https://www.edsm.net/dump/bodies7days.json.gz",
+        "https://www.edsm.net/dump/systemsWithCoordinates7days.json.gz",
+        "https://www.edsm.net/dump/systemsWithoutCoordinates.json.gz"
+      ]
+    }
+  ]
+}

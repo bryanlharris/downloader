@@ -88,12 +88,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Python downloader")
     parser.add_argument(
         '--root',
-        default='/Volumes/edsm_lc/edsm_bronze/landing/data',
+        default='/Volumes/dev_lc/edsm_bronze/landing/data',
         help='Destination root path (UC path)'
     )
     parser.add_argument(
         '--marker-root',
-        default='/Volumes/edsm_lc/edsm_bronze/landing/markers',
+        default='/Volumes/dev_lc/edsm_bronze/landing/markers',
         help='Marker directory root'
     )
     args = parser.parse_args()
