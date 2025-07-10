@@ -7,7 +7,8 @@ import gzip
 import os
 import shutil
 import tempfile
-import urllib.request
+import subprocess
+import shlex
 from datetime import datetime
 from pathlib import Path
 from typing import Iterable
@@ -70,7 +71,6 @@ def download_task(task: dict, *, dry_run: bool = False) -> None:
             if filename.endswith(".gz"):
                 filename = filename[:-3]
 
-            gz_path = tmp_save_dir / f"{filename}.gz"
             ndjson_tmp = tmp_save_dir / filename
             dest_file = root_save_dir / filename
 
@@ -78,11 +78,22 @@ def download_task(task: dict, *, dry_run: bool = False) -> None:
                 print(f"Would download {url} to {dest_file}")
                 continue
 
-            with urllib.request.urlopen(url) as response, gz_path.open("wb") as out:
-                shutil.copyfileobj(response, out)
+            cmd = [
+                "bash",
+                "-c",
+                (
+                    "wget -nv -O - "
+                    + shlex.quote(url)
+                    + " | gunzip -c | sed "
+                    "-e '1s/^\\[' "
+                    "-e '$s/]$//' "
+                    "-e 's/^[[:space:]]*//' "
+                    "-e 's/},$//'"
+                ),
+            ]
 
-            stream_gz_to_ndjson(gz_path, ndjson_tmp)
-            gz_path.unlink()
+            with ndjson_tmp.open('w', encoding='utf-8') as out:
+                subprocess.run(cmd, stdout=out, check=True)
 
             shutil.copy2(ndjson_tmp, dest_file)
             ndjson_tmp.unlink()
